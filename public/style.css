@@ -1,0 +1,59 @@
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0e0e0e;
+  color: #fff;
+}
+
+.top {
+  padding: 12px;
+  position: sticky;
+  top: 0;
+  background: #0e0e0e;
+}
+
+#search {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  outline: none;
+  margin-bottom: 10px;
+}
+
+#filters {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+
+#filters button {
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.item {
+  cursor: pointer;
+}
+
+.item img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.item span {
+  display: block;
+  font-size: 14px;
+  margin-top: 4px;
+}
