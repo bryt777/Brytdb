@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Art Gallery</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="top">
+  <input
+    type="text"
+    id="search"
+    placeholder="Search artworks..."
+  />
+  <div id="filters"></div>
+</header>
+
+<main id="gallery" class="grid"></main>
+
+<script>
+let artworks = [];
+let activeTag = "all";
+
+async function loadGallery() {
+  const res = await fetch("/api/gallery");
+  artworks = await res.json();
+  renderFilters();
+  renderGallery();
+}
+
+function renderFilters() {
+  const filters = document.getElementById("filters");
+  const tags = new Set(["all"]);
+
+  artworks.forEach(a => a.tags.forEach(t => tags.add(t)));
+
+  filters.innerHTML = "";
+  tags.forEach(tag => {
+    const btn = document.createElement("button");
+    btn.textContent = "#" + tag;
+    btn.onclick = () => {
+      activeTag = tag;
+      renderGallery();
+    };
+    filters.appendChild(btn);
+  });
+}
+
+function renderGallery() {
+  const search = document.getElementById("search").value.toLowerCase();
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  artworks
+    .filter(a =>
+      (activeTag === "all" || a.tags.includes(activeTag)) &&
+      (a.title.toLowerCase().includes(search) ||
+       a.tags.join(" ").includes(search))
+    )
+    .forEach(a => {
+      const item = document.createElement("div");
+      item.className = "item";
+      item.innerHTML = `
+        <img src="${a.image}" alt="${a.title}">
+        <span>${a.title}</span>
+      `;
+      item.onclick = () => {
+        location.href = `viewer.html?id=${a.id}`;
+      };
+      gallery.appendChild(item);
+    });
+}
+
+document.getElementById("search").addEventListener("input", renderGallery);
+
+loadGallery();
+</script>
+
+</body>
+</html>
